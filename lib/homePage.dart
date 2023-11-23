@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:es_project/disease.dart';
 import 'package:es_project/dropDownItem.dart';
 import 'package:es_project/informationPage.dart';
 import 'package:es_project/location.dart';
+import 'package:es_project/locationResult.dart';
 import 'package:es_project/noiseLevel.dart';
 import 'package:es_project/result.dart';
 import 'package:flutter/material.dart';
@@ -29,14 +31,21 @@ class _homePageState extends State<homePage> {
   String typeofarea = locations[0].typeOfLocation;
   Map<String, dynamic> map = {};
 
-  String _selectedtime = TimeOfDay.now().hour.toString() +
-      '-' +
-      (TimeOfDay.now().hour + 1).toString();
+  String _selectedtime = '';
+  void makeTimeString(TimeOfDay obj) {
+    _selectedtime = obj.hour.toString() + ':';
+    if (obj.minute <= 9) {
+      _selectedtime += '0';
+    }
+    _selectedtime += obj.minute.toString();
+  }
+
   @override
   void initState() {
     super.initState();
     DateTime.now().weekday == 7 ? day = 'Weekend' : day = 'Week';
     // day = 'Weekend';
+    makeTimeString(TimeOfDay.now());
     data();
     print(day);
   }
@@ -71,8 +80,7 @@ class _homePageState extends State<homePage> {
       initialTime: TimeOfDay.now(),
     );
     setState(() {
-      _selectedtime =
-          result!.hour.toString() + ':' + (result.minute).toString();
+      makeTimeString(result!);
       time = result!.hour.toString() + '-' + (result.hour + 1).toString();
       data();
     });
@@ -231,27 +239,53 @@ class _homePageState extends State<homePage> {
             const SizedBox(
               height: 6,
             ),
-            result(
+            locationResult(
               map: map,
               area: typeofarea,
             ),
             const SizedBox(
               height: 12,
             ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => informationPage(),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+              ),
+              child: Row(
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => informationPage(),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      'Effects',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
-                );
-              },
-              child: const Text(
-                'Effects',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                ),
+                  Spacer(),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => diseasePage(),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      'Diseases',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

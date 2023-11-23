@@ -17,7 +17,7 @@ class infoCard extends StatelessWidget {
             children: [
               Container(
                 alignment: Alignment.center,
-                height: 69,
+                height: 77.7,
                 width: 80,
                 padding: const EdgeInsets.only(
                   top: 2,
@@ -46,7 +46,7 @@ class infoCard extends StatelessWidget {
                     horizontal: 10,
                   ),
                   alignment: Alignment.center,
-                  height: 69,
+                  height: 78,
                   width: (double.maxFinite),
                   color: Colors.white54,
                   child: Text(
